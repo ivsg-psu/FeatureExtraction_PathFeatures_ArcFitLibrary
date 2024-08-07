@@ -152,7 +152,7 @@ end
 % end
 
 fig_num = 1234;
-data_width = 20;
+data_width = 200;
 [curvatures, arc_centers, index_ranges, point_curvature_minimum, curvature_SNRs] = fcn_arcFit_curvatureAlongCurve(points_to_fit, (data_width), (fig_num));
 
 % Assign islands to locations where the SNR is less than 1, e.g. it's more

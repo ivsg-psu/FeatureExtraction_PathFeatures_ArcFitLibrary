@@ -210,7 +210,7 @@ for ith_point = 1:Npoints
 
     % Get the information for this test point
     [point_curvature, point_circle_center, index_range, point_curvature_minimum, best_SNR] = ...
-        fcn_geometry_curvatureAtPoint(points_to_fit, ith_point, data_width, (-1));
+        fcn_arcFit_curvatureAtPoint(points_to_fit, ith_point, data_width, (-1));
 
     % Save results into the arrays
     index_curvatures(ith_point,1) = ith_point;
@@ -227,6 +227,8 @@ end
 % (regression requires minimum 3 points). To fix, we have the end points
 % inheret the values from their closest neighbors.
 
+% Find the first point that is NOT an nan number, and go to the spot one
+% before this
 N_to_fix = find(~isnan(curvatures),1)-1;
 
 % Fix NaN values at start
@@ -254,19 +256,19 @@ curvature_SNRs(range_to_fix,1) = curvature_SNRs(index_to_inheret,1);
 % data. To fix, we have the end points inheret the values from their
 % closest neighbors.
 
-if isempty(data_width)
-    data_width = 20;
-end
-
-% Fix SNR values at start
-index_to_inheret = data_width+1;
-range_to_fix = 1:data_width;
-curvature_SNRs(range_to_fix,1) = curvature_SNRs(index_to_inheret,1);
-
-% Fix NaN values at end
-index_to_inheret = Npoints - data_width;
-range_to_fix = (Npoints - data_width + 1):Npoints;
-curvature_SNRs(range_to_fix,1) = curvature_SNRs(index_to_inheret,1);
+% if isempty(data_width)
+%     data_width = 20;
+% end
+% 
+% % Fix SNR values at start
+% index_to_inheret = data_width+1;
+% range_to_fix = 1:data_width;
+% curvature_SNRs(range_to_fix,1) = curvature_SNRs(index_to_inheret,1);
+% 
+% % Fix NaN values at end
+% index_to_inheret = Npoints - data_width;
+% range_to_fix = (Npoints - data_width + 1):Npoints;
+% curvature_SNRs(range_to_fix,1) = curvature_SNRs(index_to_inheret,1);
 
 
 % Find the curvature SNR. First, we do not allow curavatures producing

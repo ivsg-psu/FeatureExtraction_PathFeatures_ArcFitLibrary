@@ -29,7 +29,9 @@
 % -- clear out Geometry library of:
 % script_test_fcn_geometry_curvatureAlongCurve
 % fcn_geometry_curvatureAlongCurve
-
+% fcn_geometry_curvatureAtPoint
+% clean up script_test_fcn_arcFit_curvatureAlongCurve when done
+% update fitRadiusToPoints in geometry library
 
 
 %% Prep the workspace
@@ -59,6 +61,12 @@ ith_library = ith_library+1;
 library_name{ith_library}    = 'GPSClass_v2023_06_29';
 library_folders{ith_library} = {'Functions'};
 library_url{ith_library}     = 'https://github.com/ivsg-psu/FieldDataCollection_GPSRelatedCodes_GPSClass/archive/refs/tags/GPSClass_v2023_06_29.zip';
+
+ith_library = ith_library+1;
+library_name{ith_library}    = 'GeometryClass_v2024_08_07';
+library_folders{ith_library} = {'Functions'};
+library_url{ith_library}     = 'https://github.com/ivsg-psu/PathPlanning_GeomTools_GeomClassLibrary/archive/refs/tags/GeometryClass_v2024_08_07.zip';
+
 
 % ith_library = ith_library+1;
 % library_name{ith_library}    = 'LineFitting_v2023_07_24';
@@ -183,7 +191,7 @@ plot(points_to_fit(:,1),points_to_fit(:,2),'k.','MarkerSize',20);
 plot(points_to_fit(1,1),points_to_fit(1,2),'g.','MarkerSize',20);
 plot(points_to_fit(end,1),points_to_fit(end,2),'ro','MarkerSize',10);
 
-%% Assess the data propertieso
+%% Assess the data properties
 % to find average spacing, number of points, etc.
 Npoints = length(points_to_fit(:,1));
 minimum_island_separation = 10; % Units are meters. See comments below for explanation
@@ -264,10 +272,12 @@ end
 % end
 
 fig_num = 1234;
-data_width = 20;
+data_width = 200;
 [curvatures, arc_centers, index_ranges, point_curvature_minimum, curvature_SNRs] = fcn_arcFit_curvatureAlongCurve(points_to_fit, (data_width), (fig_num));
 
-% Assign islands to locations where the SNR is less than 1, e.g. it's more
+
+%% Assign islands 
+% This is where locations where the SNR is small, e.g than 1, e.g. it's more
 % likely that the data is a line than an arc. We make it 3 here to give it
 % a bit of wiggle-room (some are right on edge).
 % SNR_threshold = 0.2; % for 5 points
