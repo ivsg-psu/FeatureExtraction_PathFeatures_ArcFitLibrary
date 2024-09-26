@@ -22,7 +22,8 @@
 % 2024_08_06 - sbrennan@psu.edu
 % -- started the repo by pulling codes out of Geometry class library,
 % specifically from script_test_fcn_geometry_curvatureAlongCurve
-
+% 2024_09_26 - sbrennan@psu.edu
+% -- updated function fcn_INTERNAL_clearUtilitiesFromPathAndFolders
 
 %% To-do items
 % 2024_08_06 - S. Brennan
@@ -1304,7 +1305,6 @@ end % Ends fcn_INTERNAL_nudgeArcArcC1SegmentToC2
 %
 % See: https://patorjk.com/software/taag/#p=display&f=Big&t=Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%§
-
 %% function fcn_INTERNAL_clearUtilitiesFromPathAndFolders
 function fcn_INTERNAL_clearUtilitiesFromPathAndFolders
 % Clear out the variables
@@ -1313,12 +1313,21 @@ clear flag*
 clear path
 
 % Clear out any path directories under Utilities
-path_dirs = regexp(path,'[;]','split');
+if ispc
+    path_dirs = regexp(path,'[;]','split');
+elseif ismac
+    path_dirs = regexp(path,'[:]','split');
+elseif isunix
+    path_dirs = regexp(path,'[;]','split');
+else
+    error('Unknown operating system. Unable to continue.');
+end
+
 utilities_dir = fullfile(pwd,filesep,'Utilities');
 for ith_dir = 1:length(path_dirs)
     utility_flag = strfind(path_dirs{ith_dir},utilities_dir);
     if ~isempty(utility_flag)
-        rmpath(path_dirs{ith_dir});
+        rmpath(path_dirs{ith_dir})
     end
 end
 
